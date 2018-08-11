@@ -76,12 +76,18 @@ public class SimpleKV extends BaseOP {
                 return null;
             }
             long start = System.currentTimeMillis();
-            byte[] data = store.get((DataHelper) ih.type(key));
+            DataHelper posIh = (DataHelper) ih.type(key);
+            //check null, value not may be not exist
+            if (posIh == null){
+                log.debug("read IndexHelper null key:"+key);
+                return null;
+            }
+            byte[] data = store.get(posIh);
             String resp = new String(data, Charsets.UTF_8);
             log.debug("key={},value={} cost={}ms", key, resp, (System.currentTimeMillis() - start));
             return data;
         } catch (Exception e) {
-            log.error("read data error", e);
+            log.error("read data error key:"+key, e);
         }
         return null;
     }
@@ -93,6 +99,7 @@ public class SimpleKV extends BaseOP {
 
     @Override
     public void removeData(String key) {
+        //TODO debug read error null
         DataHelper dataHelper = (DataHelper) ih.type(key);
         ih.remove(dataHelper);
         store.remove(dataHelper);

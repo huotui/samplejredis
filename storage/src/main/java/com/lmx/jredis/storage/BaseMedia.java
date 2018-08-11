@@ -9,6 +9,7 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 
 /**
+ * TODO 接口化，自己写一个NIO的储存，增加单元测试储存性能
  * 存储单元
  * Created by lmx on 2017/4/14.
  */

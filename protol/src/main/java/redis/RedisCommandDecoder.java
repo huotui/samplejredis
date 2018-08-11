@@ -63,9 +63,13 @@ public class RedisCommandDecoder extends ReplayingDecoder<Void> {
             in.readerIndex(in.readerIndex() - 1);
             // Read command -- can't be interupted
             byte[][] b = new byte[1][];
-            b[0] = in.readBytes(in.bytesBefore((byte) '\r')).array();
-            in.skipBytes(2);
-            out.add(new Command(b, true));
+            int r=in.bytesBefore((byte) '\r');
+            //check -1
+            if (r!=-1){
+                b[0] = in.readBytes(r).array();
+                in.skipBytes(2);
+                out.add(new Command(b, true));
+            }
         }
     }
 
