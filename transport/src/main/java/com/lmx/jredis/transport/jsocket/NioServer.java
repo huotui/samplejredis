@@ -121,6 +121,7 @@ public class NioServer {
                                 key.cancel();
                                 key.channel().close();
                             } catch (Exception e1) {
+                                log.error("startNioServer error", e);
                             }
                         }
                     } /*else if (key.isWritable()) {

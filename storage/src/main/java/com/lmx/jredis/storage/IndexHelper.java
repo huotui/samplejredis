@@ -18,6 +18,7 @@ public abstract class IndexHelper extends BaseMedia {
     @Getter
     public Map<String, Object> kv = new ConcurrentHashMap<>();
     public Map<String, Long> expire = new ConcurrentHashMap<>();
+    boolean first = true;
 
     public IndexHelper(String fileName, int size) throws Exception {
         super(fileName, size);
@@ -121,7 +122,6 @@ public abstract class IndexHelper extends BaseMedia {
     }
 
     public void recoverIndex() throws Exception {
-        boolean first = true;
         buffer.position(4);
         while (buffer.hasRemaining()) {
             int keyLength = buffer.getInt();

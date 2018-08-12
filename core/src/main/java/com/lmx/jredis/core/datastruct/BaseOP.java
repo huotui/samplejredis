@@ -20,8 +20,9 @@ public abstract class BaseOP {
             remove(key);
             ih.rmExpire(key);
             return true;
+        }else {
+            return false;
         }
-        return false;
     }
 
     public boolean isExist(String key) {

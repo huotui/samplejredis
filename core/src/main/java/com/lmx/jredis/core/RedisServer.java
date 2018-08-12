@@ -1247,8 +1247,7 @@ public interface RedisServer {
      * @param key0
      * @param min1
      * @param max2
-     * @param withscores3
-     * @param offset_or_count4
+     * @param withscores_offset_or_count4
      * @return MultiBulkReply
      */
     MultiBulkReply zrangebyscore(byte[] key0, byte[] min1, byte[] max2, byte[][] withscores_offset_or_count4) throws RedisException;
@@ -1314,8 +1313,7 @@ public interface RedisServer {
      * @param key0
      * @param max1
      * @param min2
-     * @param withscores3
-     * @param offset_or_count4
+     * @param withscores_offset_or_count4
      * @return MultiBulkReply
      */
     MultiBulkReply zrevrangebyscore(byte[] key0, byte[] max1, byte[] min2, byte[][] withscores_offset_or_count4) throws RedisException;
