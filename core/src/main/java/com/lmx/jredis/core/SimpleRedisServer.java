@@ -1252,12 +1252,14 @@ public class SimpleRedisServer implements RedisServer {
      */
     @Override
     public BulkReply lpop(byte[] key0) throws RedisException {
+        //TODO 和读取的不是一个数据list
         List<BytesValue> list = _getlist(key0, false);
         if (list == null || list.size() == 0) {
             return NIL_REPLY;
         } else {
             return new BulkReply(list.remove(0).getBytes());
         }
+
     }
 
     /**
