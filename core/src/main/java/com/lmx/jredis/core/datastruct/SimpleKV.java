@@ -45,7 +45,7 @@ public class SimpleKV extends BaseOP {
 
     public boolean write(String key, String value) {
         try {
-            if (super.write(key, value)) {
+            if (super.isCanWrite(key, value)) {
                 DataHelper dataHelper = (DataHelper) ih.type(key);
                 if (dataHelper != null) {
                     dataHelper = store.update(dataHelper, value.getBytes(Charsets.UTF_8));

@@ -38,11 +38,11 @@ public abstract class BaseOP {
         ih.kv.remove(key);
     }
 
-    public boolean write(String key, String value) {
+    public boolean isCanWrite(String key, String value) {
         return checkKeyType(key);
     }
 
-    public boolean write(int db, String key, String value) {
+    public boolean isCanWrite(int db, String key, String value) {
         return checkKeyType(key);
     }
 }

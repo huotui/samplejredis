@@ -49,7 +49,7 @@ public class SimpleHash extends BaseOP {
 
     public boolean write(String hash, String field, String value) {
         try {
-            if (super.write(field, value)) {
+            if (super.isCanWrite(field, value)) {
                 Map<String, DataHelper> map = ((Map<String, DataHelper>) ih.type(hash));
                 if (!CollectionUtils.isEmpty(map)) {
                     for (Map.Entry<String, DataHelper> e : map.entrySet()) {
