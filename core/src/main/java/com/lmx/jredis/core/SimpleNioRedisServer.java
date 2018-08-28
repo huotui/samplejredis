@@ -499,16 +499,13 @@ public class SimpleNioRedisServer implements RedisServer {
      * @return BulkReply
      */
     @Override
-    public BulkReply get(byte[] key0) throws RedisException {
+    public BulkReply get(byte[] key0){
         RedisDbDelegate.RedisDB db = getRedisDB();
         Object o = db.getSimpleKV().read(new String(key0));
-        if (o instanceof byte[]) {
-            return new BulkReply((byte[]) o);
-        }
         if (o == null) {
             return NIL_REPLY;
         } else {
-            throw invalidValue();
+            return new BulkReply((byte[]) o);
         }
     }
 
@@ -1221,6 +1218,9 @@ public class SimpleNioRedisServer implements RedisServer {
     public IntegerReply linsert(byte[] key0, byte[] where1, byte[] pivot2, byte[] value3) throws RedisException {
         SimpleRedisServer.Where where = SimpleRedisServer.Where.valueOf(new String(where1).toUpperCase());
         List<BytesValue> list = _getlist(key0, true);
+        if (list == null) {
+            return integer(-1);
+        }
         BytesKey pivot = new BytesKey(pivot2);
         int i = list.indexOf(pivot);
         if (i == -1) {
@@ -1609,7 +1609,7 @@ public class SimpleNioRedisServer implements RedisServer {
                 replies.add(new BulkReply(bytes));
             }
         }
-        return new MultiBulkReply(replies.toArray(new Reply[replies.size()]));
+        return new MultiBulkReply(replies.toArray(new Reply[0]));
     }
 
     /**
@@ -2820,7 +2820,7 @@ public class SimpleNioRedisServer implements RedisServer {
         int start = _torange(start1, size);
         int end = _torange(stop2, size);
         Iterator<ZSetEntry> iterator = zset.iterator();
-        List<Reply<ByteBuf>> list = new ArrayList<Reply<ByteBuf>>();
+        List<Reply<ByteBuf>> list = new ArrayList<Reply<ByteBuf>>(size);
         for (int i = 0; i < size; i++) {
             if (iterator.hasNext()) {
                 ZSetEntry next = iterator.next();
@@ -2834,7 +2834,7 @@ public class SimpleNioRedisServer implements RedisServer {
                 }
             }
         }
-        return new MultiBulkReply(list.toArray(new Reply[list.size()]));
+        return new MultiBulkReply(list.toArray(new Reply[0]));
     }
 
     private boolean _checkcommand(byte[] check, String command, boolean syntax) throws RedisException {
@@ -2870,7 +2870,7 @@ public class SimpleNioRedisServer implements RedisServer {
         ZSet zset = _getzset(key0, false);
         if (zset.isEmpty()) return MultiBulkReply.EMPTY;
         List<Reply<ByteBuf>> list = _zrangebyscore(min1, max2, withscores_offset_or_count4, zset, false);
-        return new MultiBulkReply(list.toArray(new Reply[list.size()]));
+        return new MultiBulkReply(list.toArray(new Reply[0]));
     }
 
     private List<Reply<ByteBuf>> _zrangebyscore(byte[] min1, byte[] max2, byte[][] withscores_offset_or_count4, ZSet zset, boolean reverse) throws RedisException {
@@ -3052,7 +3052,7 @@ public class SimpleNioRedisServer implements RedisServer {
         int end = size - _torange(start1, size) - 1;
         int start = size - _torange(stop2, size) - 1;
         Iterator<ZSetEntry> iterator = zset.iterator();
-        List<Reply<ByteBuf>> list = new ArrayList<Reply<ByteBuf>>();
+        List<Reply<ByteBuf>> list = new ArrayList<Reply<ByteBuf>>(size);
         for (int i = 0; i < size; i++) {
             if (iterator.hasNext()) {
                 ZSetEntry next = iterator.next();
@@ -3066,7 +3066,7 @@ public class SimpleNioRedisServer implements RedisServer {
                 }
             }
         }
-        return new MultiBulkReply(list.toArray(new Reply[list.size()]));
+        return new MultiBulkReply(list.toArray(new Reply[0]));
     }
 
     /**
@@ -3084,7 +3084,7 @@ public class SimpleNioRedisServer implements RedisServer {
         ZSet zset = _getzset(key0, false);
         if (zset.isEmpty()) return MultiBulkReply.EMPTY;
         List<Reply<ByteBuf>> list = _zrangebyscore(min2, max1, withscores_offset_or_count4, zset, true);
-        return new MultiBulkReply(list.toArray(new Reply[list.size()]));
+        return new MultiBulkReply(list.toArray(new Reply[0]));
     }
 
     /**

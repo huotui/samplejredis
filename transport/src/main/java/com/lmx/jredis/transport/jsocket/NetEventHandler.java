@@ -86,6 +86,7 @@ public class NetEventHandler implements EventHandler<RequestEvent> {
                     handleReq(byteBuf, socket);
                 }
             } catch (Exception e) {
+                log.error("RequestEvent error event:"+event, e);
             }
         }
     }

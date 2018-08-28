@@ -46,6 +46,9 @@ public class RedisDbDelegate {
 
     @Data
     public static class RedisDB {
+        /**
+         * 公共的索引，防止同一key被赋值不同类型
+         */
         IndexHelper indexHelper;
         SimpleKV simpleKV;
         SimpleList simpleList;

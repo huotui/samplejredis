@@ -46,7 +46,7 @@ public class SimpleList extends BaseOP {
 
     public boolean write(String key, String value) {
         try {
-            if (super.write(key, value)) {
+            if (super.isCanWrite(key, value)) {
                 ByteBuffer b = ByteBuffer.allocateDirect(128);
                 int length = value.getBytes().length;
                 b.putInt(length);

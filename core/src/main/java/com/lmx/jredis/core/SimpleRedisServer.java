@@ -1216,6 +1216,9 @@ public class SimpleRedisServer implements RedisServer {
     public IntegerReply linsert(byte[] key0, byte[] where1, byte[] pivot2, byte[] value3) throws RedisException {
         Where where = Where.valueOf(new String(where1).toUpperCase());
         List<BytesValue> list = _getlist(key0, true);
+        if (list == null) {
+            return integer(-1);
+        }
         BytesKey pivot = new BytesKey(pivot2);
         int i = list.indexOf(pivot);
         if (i == -1) {
@@ -1249,12 +1252,14 @@ public class SimpleRedisServer implements RedisServer {
      */
     @Override
     public BulkReply lpop(byte[] key0) throws RedisException {
+        //TODO 和读取的不是一个数据list
         List<BytesValue> list = _getlist(key0, false);
         if (list == null || list.size() == 0) {
             return NIL_REPLY;
         } else {
             return new BulkReply(list.remove(0).getBytes());
         }
+
     }
 
     /**
@@ -1604,7 +1609,7 @@ public class SimpleRedisServer implements RedisServer {
                 replies.add(new BulkReply(bytes));
             }
         }
-        return new MultiBulkReply(replies.toArray(new Reply[replies.size()]));
+        return new MultiBulkReply(replies.toArray(new Reply[0]));
     }
 
     /**
@@ -2829,7 +2834,7 @@ public class SimpleRedisServer implements RedisServer {
                 }
             }
         }
-        return new MultiBulkReply(list.toArray(new Reply[list.size()]));
+        return new MultiBulkReply(list.toArray(new Reply[0]));
     }
 
     private boolean _checkcommand(byte[] check, String command, boolean syntax) throws RedisException {
@@ -2865,7 +2870,7 @@ public class SimpleRedisServer implements RedisServer {
         ZSet zset = _getzset(key0, false);
         if (zset.isEmpty()) return MultiBulkReply.EMPTY;
         List<Reply<ByteBuf>> list = _zrangebyscore(min1, max2, withscores_offset_or_count4, zset, false);
-        return new MultiBulkReply(list.toArray(new Reply[list.size()]));
+        return new MultiBulkReply(list.toArray(new Reply[0]));
     }
 
     private List<Reply<ByteBuf>> _zrangebyscore(byte[] min1, byte[] max2, byte[][] withscores_offset_or_count4, ZSet zset, boolean reverse) throws RedisException {
@@ -3061,7 +3066,7 @@ public class SimpleRedisServer implements RedisServer {
                 }
             }
         }
-        return new MultiBulkReply(list.toArray(new Reply[list.size()]));
+        return new MultiBulkReply(list.toArray(new Reply[0]));
     }
 
     /**
@@ -3079,7 +3084,7 @@ public class SimpleRedisServer implements RedisServer {
         ZSet zset = _getzset(key0, false);
         if (zset.isEmpty()) return MultiBulkReply.EMPTY;
         List<Reply<ByteBuf>> list = _zrangebyscore(min2, max1, withscores_offset_or_count4, zset, true);
-        return new MultiBulkReply(list.toArray(new Reply[list.size()]));
+        return new MultiBulkReply(list.toArray(new Reply[0]));
     }
 
     /**
